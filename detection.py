@@ -2,35 +2,43 @@ import skimage
 import matplotlib.pyplot as plt
 from skimage import io
 from skimage.feature import Cascade
-from skimage import data, exposure
 from matplotlib import patches
 
-# Charge le fichier contenant le modèle préentraîné
-trained = skimage.data.lbp_frontal_face_cascade_filename()
+def detectFaces(image, size):
+    # Charge le fichier contenant le modèle préentraîné
+    trained = skimage.data.lbp_frontal_face_cascade_filename()
 
-# Détecteur
-detector = Cascade(trained)
+    # Détecteur
+    detector = Cascade(trained)
+    detected = detector.detect_multi_scale(image, scale_factor=1.2,
+                                        step_ratio=1,
+                                        min_size=(size[0], size[0]),
+                                        max_size=(size[1], size[1]))
 
-image = "Remplir par l'image"
+    _, ax = plt.subplots()
 
-detected = detector.detect_multi_scale(image,scale_factor=1.2,
-                                       step_ratio=1,
-                                       min_size=(60,60),
-                                       max_size=(120, 120))
+    if __name__ == '__main__':
+        plt.imshow(image, cmap="gray")
 
-fig, ax = plt.subplots()
-plt.imshow(image, cmap="gray")
+        for patch in detected:
+            ax.add_patch(
+                patches.Rectangle(
+                    (patch['c'], patch['r']),
+                    patch['width'],
+                    patch['height'],
+                    fill=False,
+                    color='r',
+                    linewidth=2
+                )
+            )
 
-for patch in detected:
-    ax.add_patch(
-        patches.Rectangle(
-            (patch['c'], patch['r']),
-            patch['width'],
-            patch['height'],
-            fill=False,
-            color='r',
-            linewidth=2
-        )
-    )
+        plt.show()
+        
+    facesCoords = []
+    for patch in detected:
+        facesCoords.append((patch['c'], patch['r'], patch['width'], patch['height']))
+    return facesCoords
 
-plt.show()
+if __name__ == '__main__':
+    testImage = io.imread("test-image.jpg")
+    print(detectFaces(testImage, 300))
