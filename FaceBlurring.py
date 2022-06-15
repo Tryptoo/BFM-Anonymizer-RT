@@ -1,11 +1,11 @@
 from skimage import filters
 import numpy as np
 
-def Blurring(image,column, row, width, height):
-    yMin, yMax = column, column + width
-    xMin, xMax = row, row + height
+def Blurring(image,faceTab, blurFactor):
+    yMin, yMax = faceTab[0], faceTab[2]
+    xMin, xMax = faceTab[1], faceTab[3]
     face = image[xMin:xMax, yMin:yMax]
-    filtered = filters.gaussian(face, sigma=10)
+    filtered = filters.gaussian(face, sigma=blurFactor)
     filtered = np.round(255 * filtered)
     image[xMin:xMax, yMin:yMax] = filtered
     return image
@@ -47,7 +47,7 @@ if __name__ == '__main__':
                 linewidth=2
             )
         )
-        filtered_img = Blurring(filtered_img, patch['c'], patch['r'],patch['width'],patch['height'])
+        #filtered_img = Blurring(filtered_img, patch['c'], patch['r'],patch['width'],patch['height'])
 
 
     plt.imshow(filtered_img, cmap="gray")
