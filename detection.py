@@ -15,9 +15,9 @@ def detectFaces(image, size):
                                         min_size=(size[0], size[0]),
                                         max_size=(size[1], size[1]))
 
-    _, ax = plt.subplots()
-
     if __name__ == '__main__':
+        _, ax = plt.subplots()
+        
         plt.imshow(image, cmap="gray")
 
         for patch in detected:

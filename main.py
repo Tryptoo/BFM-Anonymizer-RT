@@ -10,8 +10,8 @@ while(True):
     # Capture the video frame by frame
     _, frame = vid.read()
 
+    # Get faces coords
     facesCoords = detectFaces(frame, (MIN_FACE_RECT_SIZE, MAX_FACE_RECT_SIZE))
-
     for face in facesCoords:
         cv2.rectangle(frame, (face[0], face[1]), (face[0] + face[2], face[1] + face[3]), (0, 0, 255), 2)
 
