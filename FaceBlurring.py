@@ -50,8 +50,5 @@ if __name__ == '__main__':
         filtered_img = Blurring(filtered_img, patch['c'], patch['r'],patch['width'],patch['height'])
 
 
-
-
-
     plt.imshow(filtered_img, cmap="gray")
     plt.show()

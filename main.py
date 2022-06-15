@@ -13,7 +13,11 @@ while(True):
     # Get faces coords
     facesCoords = detectFaces(frame, (MIN_FACE_RECT_SIZE, MAX_FACE_RECT_SIZE))
     for face in facesCoords:
-        cv2.rectangle(frame, (face[0], face[1]), (face[0] + face[2], face[1] + face[3]), (0, 0, 255), 2)
+        left = int(face[0] - face[2] * FACE_RECT_INCREASE_RATIO[0] / 2 + FACE_RECT_OFFSET[0])
+        top = int(face[1] - face[3] * FACE_RECT_INCREASE_RATIO[1] / 2 + FACE_RECT_OFFSET[1])
+        right = int(left + face[2] + face[2] * FACE_RECT_INCREASE_RATIO[0] + FACE_RECT_OFFSET[0])
+        bottom = int(top + face[3] + face[3] * FACE_RECT_INCREASE_RATIO[1] + FACE_RECT_OFFSET[1])
+        cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
 
     # FPS Counter
     fps = str(int(1 * 10 / (time.time() - lastTime)) / 10) + " fps"
