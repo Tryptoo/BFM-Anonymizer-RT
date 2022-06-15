@@ -2,6 +2,7 @@ import cv2
 import time
 from detection import detectFaces
 from constants import *
+from FaceBlurring import Blurring
 
 vid = cv2.VideoCapture(0)
 lastTime = time.time()
@@ -12,16 +13,18 @@ while(True):
 
     # Get faces coords
     facesCoords = detectFaces(frame, (MIN_FACE_RECT_SIZE, MAX_FACE_RECT_SIZE))
+    filtered_img = frame
     for face in facesCoords:
-        cv2.rectangle(frame, (face[0], face[1]), (face[0] + face[2], face[1] + face[3]), (0, 0, 255), 2)
+        #cv2.rectangle(frame, (face[0], face[1]), (face[0] + face[2], face[1] + face[3]), (0, 0, 255), 2)
+        filtered_img = Blurring(filtered_img, face, BLUR_FACTOR)
 
     # FPS Counter
     fps = str(int(1 * 10 / (time.time() - lastTime)) / 10) + " fps"
     lastTime = time.time()
-    cv2.putText(frame, fps, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, .8, (0, 255, 0), 2, 2)
-
+    cv2.putText(filtered_img, fps, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, .8, (0, 255, 0), 2, 2)
+   
     # Display the resulting frame
-    cv2.imshow('frame', frame)
+    cv2.imshow('frame', filtered_img)
       
     # the 'q' button is set as the
     # quitting button you may use any
