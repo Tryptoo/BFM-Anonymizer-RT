@@ -6,6 +6,7 @@ from FaceBlurring import Blurring
 
 vid = cv2.VideoCapture(0)
 lastTime = time.time()
+oldfaces = []
 
 while(True):
     # Capture the video frame by frame
@@ -14,6 +15,10 @@ while(True):
     # Get faces coords
     facesCoords = detectFaces(frame, (MIN_FACE_RECT_SIZE, MAX_FACE_RECT_SIZE))
     filtered_img = frame
+    if(len(facesCoords) <= 0):
+        facesCoords = oldfaces
+    else :
+        oldfaces = facesCoords
     for face in facesCoords:
         left = int(face[0] - face[2] * FACE_RECT_INCREASE_RATIO[0] / 2 + FACE_RECT_OFFSET[0])
         top = int(face[1] - face[3] * FACE_RECT_INCREASE_RATIO[1] / 2 + FACE_RECT_OFFSET[1])
