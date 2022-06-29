@@ -4,7 +4,7 @@ import numpy
 from detection import detectFaces
 import matplotlib.pyplot as plt
 from constants import *
-from FaceBlurring import Blurring
+from FaceBlurring import Blurring, BlurringCV
 
 def TreatCoords(face, imageShape):
     left = int(face[0] - face[2] * FACE_RECT_INCREASE_RATIO[0] / 2 + FACE_RECT_OFFSET[0])
@@ -91,7 +91,10 @@ while(True):
     for rect in treatedRects:
         # cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
         if rect["updateTimeLeft"] <= 0:
-            rect["treatedRect"] = Blurring(frame, rect["rect"], BLUR_FACTOR)
+            if BLUR_WITH_CV2 :
+                rect["treatedRect"] = BlurringCV(frame, rect["rect"], BLUR_FACTOR)
+            else :
+                rect["treatedRect"] = Blurring(frame, rect["rect"], BLUR_FACTOR)
             rect["updateTimeLeft"] = BLUR_UPDATE_DELAY
 
     frame = AssembleImage(frame, treatedRects)

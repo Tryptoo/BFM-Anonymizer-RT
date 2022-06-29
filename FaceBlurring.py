@@ -1,12 +1,24 @@
 from skimage import filters
 import numpy as np
-
+import cv2
 def Blurring(image, faceTab, blurFactor):
     yMin, yMax = faceTab[0], faceTab[2]
     xMin, xMax = faceTab[1], faceTab[3]
     face = image[xMin:xMax, yMin:yMax]
     filtered = filters.gaussian(face, sigma=blurFactor)
     filtered = np.round(255 * filtered)
+    if __name__ == '__main__':
+        image[xMin:xMax, yMin:yMax] = filtered
+        return image
+    return filtered
+
+def BlurringCV(image, faceTab, blurFactor):
+    yMin, yMax = faceTab[0], faceTab[2]
+    xMin, xMax = faceTab[1], faceTab[3]
+    face = image[xMin:xMax, yMin:yMax]
+    height, width = face.shape[:2]
+    temp = cv2.resize(face,(16,16), interpolation=cv2.INTER_LINEAR)
+    filtered = cv2.resize(temp, (width, height), interpolation=cv2.INTER_NEAREST)
     if __name__ == '__main__':
         image[xMin:xMax, yMin:yMax] = filtered
         return image
