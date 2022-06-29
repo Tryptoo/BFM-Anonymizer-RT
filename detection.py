@@ -41,4 +41,4 @@ def detectFaces(image, size):
 
 if __name__ == '__main__':
     testImage = io.imread("test-image.jpg")
-    print(detectFaces(testImage, 300))
+    print(detectFaces(testImage, (50, 300)))
